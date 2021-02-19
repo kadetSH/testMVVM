@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
 import androidx.recyclerview.widget.RecyclerView
+import com.example.lesson03.FilmsDescriptionFragment.Companion.adapter
 
 import com.example.lesson03.recyclerMy.FilmsAdapter
 import com.example.lesson03.recyclerMy.FilmsItem
@@ -17,21 +18,6 @@ import com.example.lesson03.viewmodel.RepoListFilmsViewModel
 
 
 class FilmsFragment : Fragment() {
-
-//    companion object {
-//
-//        fun newInstance(list: ArrayList<FilmsItem>): FilmsFragment {
-//            val args = Bundle()
-//            args.putSerializable("spisok", list)
-//
-//            val fragment = FilmsFragment()
-//            fragment.arguments = args
-//            return fragment
-//        }
-//
-//
-//        var adapter: FilmsAdapter? = null
-//    }
 
     var list = ArrayList<FilmsItem>()
     var filmP: String = ""
@@ -45,15 +31,12 @@ class FilmsFragment : Fragment() {
 
     private var recyclerView: RecyclerView? = null
     private val adapter by lazy {
-        FilmsAdapter(
-            LayoutInflater.from(requireContext()),
+        FilmsAdapter(LayoutInflater.from(requireContext()),
             list
         ) { filmsItem: FilmsItem, position: Int, note: String ->
             (activity as? OnFilmLikeClickListener)?.onFilmLikeClick(filmsItem, position, note)
         }
     }
-
-
 
     val rcv by lazy {
         view?.findViewById<RecyclerView>(R.id.id_recyclerView)
@@ -78,7 +61,14 @@ class FilmsFragment : Fragment() {
 
         initRecycler()
         viewModel.repos.observe(viewLifecycleOwner, Observer<ArrayList<FilmsItem>> {
-            println("")
+            println("1")
+            var newAdapter = FilmsAdapter(
+                LayoutInflater.from(requireContext()),
+                it
+            ) { filmsItem: FilmsItem, position: Int, note: String ->
+                (activity as? OnFilmLikeClickListener)?.onFilmLikeClick(filmsItem, position, note)
+            }
+            recyclerView!!.adapter = newAdapter
         })
 
 

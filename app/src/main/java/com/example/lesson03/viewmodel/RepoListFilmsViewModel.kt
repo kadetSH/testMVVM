@@ -2,18 +2,20 @@ package com.example.lesson03.viewmodel
 
 import android.app.Application
 import android.content.res.TypedArray
+import android.os.CountDownTimer
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.example.lesson03.FilmsFragment
 import com.example.lesson03.R
 import com.example.lesson03.recyclerMy.FilmsItem
-import com.otus.otusaacpart1.data.entity.Repo
+
 
 class RepoListFilmsViewModel(application: Application) : AndroidViewModel(application) {
+    init {
+        startTime()
+    }
 
-    private val reposLiveData = MutableLiveData<ArrayList<FilmsItem>>()
+    val reposLiveData = MutableLiveData<ArrayList<FilmsItem>>()
 
     var list = ArrayList<FilmsItem>()
     var filmP: String = ""
@@ -76,6 +78,21 @@ class RepoListFilmsViewModel(application: Application) : AndroidViewModel(applic
         }
         iArray.recycle()
         return ids
+    }
+
+    fun startTime(){
+        object : CountDownTimer(20000, 2000){
+            override fun onTick(millisUntilFinished: Long) {
+                var we = list
+                list.clear()
+                list = we
+            }
+
+            override fun onFinish() {
+                TODO("Not yet implemented")
+            }
+
+        }
     }
 
 
